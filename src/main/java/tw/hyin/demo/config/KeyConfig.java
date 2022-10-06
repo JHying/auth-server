@@ -1,6 +1,8 @@
 package tw.hyin.demo.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import tw.hyin.java.utils.Log;
 import tw.hyin.java.utils.security.AESUtil;
 import tw.hyin.java.utils.security.RSAUtil;
@@ -21,11 +23,6 @@ public class KeyConfig {
 
     static {
         try {
-            //取得金鑰 (local)
-//            privateKey = RSAUtil.loadPrivateKey("privateKey.jks");
-//            publicKey = RSAUtil.loadPublicKey("publicKey.jks");
-//            secretKey = AESUtil.loadSecretKey("secretKey.jks");
-            //取得金鑰 (jar)
             privateKey = RSAUtil.loadPrivateKeyFromJAR("privateKey.jks");
             publicKey = RSAUtil.loadPublicKeyFromJAR("publicKey.jks");
             secretKey = AESUtil.loadSecretKeyFromJAR("secretKey.jks");

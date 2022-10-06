@@ -9,14 +9,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import tw.hyin.demo.AuthServiceApplication;
+import tw.hyin.demo.AuthServerApplication;
 
 /**
  * @author rita6 on 2021.
  */
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = AuthServiceApplication.class)
+@SpringBootTest(classes = AuthServerApplication.class)
 @WebAppConfiguration
 public abstract class AbstractRestTest {
 

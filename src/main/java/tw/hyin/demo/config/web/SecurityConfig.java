@@ -3,10 +3,8 @@ package tw.hyin.demo.config.web;
 import tw.hyin.demo.repo.UserTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,13 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 定義驗證規則
                 .and()
                 .authorizeRequests()
-                .anyRequest().authenticated()// 全部都要認證
+                .anyRequest().permitAll()// 統一由 gateway 驗證
                 .and()
-                // 取得 token 之請求 (該 url) 交給 JwtLoginFilter 來處理 (要先登入才能取得token)
+                // 取得 token 之請求 (該 url) 交給 JwtLoginFilter 來處理
                 .addFilterBefore(new JwtLoginFilter("/register", authenticationManager(), tokenRepository),
-                        UsernamePasswordAuthenticationFilter.class)
-                // 自定義過濾器驗證 Token 是否合法
-                .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -51,15 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // TODO Auto-generated method stub
         // 帳戶驗證使用自定義類別
         auth.authenticationProvider(new JwtLoginProvider());
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-//                .anyRequest();
-                .antMatchers(HttpMethod.OPTIONS, "/**")
-                // 其他API
-                .antMatchers("/login", "/logout/*", "/test", "/sidenav", "/authlist/get");
     }
 
 }

@@ -7,14 +7,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.13</version>
+		<version>2.7.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tw.hyin.demo</groupId>
-	<artifactId>auth-service</artifactId>
-	<version>0.0.4</version>
+	<artifactId>auth-server</artifactId>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	<name>auth-service</name>
+	<name>auth-server</name>
 	<description>Service for Authentication</description>
 
 	<repositories>
@@ -85,28 +85,32 @@
 	<properties>
 		<java.version>11</java.version>
 		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
-<!--		<spring-cloud.version>2020.0.4</spring-cloud.version>-->
+		<spring-cloud.version>2021.0.4</spring-cloud.version>
 	</properties>
 
-<!--	<dependencyManagement>-->
-<!--		<dependencies>-->
-<!--			<dependency>-->
-<!--				<groupId>org.springframework.cloud</groupId>-->
-<!--				<artifactId>spring-cloud-dependencies</artifactId>-->
-<!--				<version>${spring-cloud.version}</version>-->
-<!--				<type>pom</type>-->
-<!--				<scope>import</scope>-->
-<!--			</dependency>-->
-<!--		</dependencies>-->
-<!--	</dependencyManagement>-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 
-		<!-- for RESTful API -->
-		<!-- Exclude Spring Boot's Default Logging -->
+		<!-- Spring cloud 新版需引入，否則 RefreshScope 不生效 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 		<!-- 處理 Java 基本物件方法的 Apache 工具類包 -->
@@ -152,7 +156,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-authorization-server</artifactId>
-			<version>0.3.0</version>
+			<version>0.3.1</version>
 		</dependency>
 
 		<!--Database -->
@@ -180,17 +184,6 @@
 			<artifactId>validation-api</artifactId>
 		</dependency>
 
-		<!-- Spring cloud 新版需引入，否則 RefreshScope 不生效 -->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.cloud</groupId>-->
-<!--			<artifactId>spring-cloud-starter-bootstrap</artifactId>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.cloud</groupId>-->
-<!--			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-<!--		</dependency>-->
-
 		<!-- cannot access javax.interceptor.interceptorbinding -->
 		<!-- https://mvnrepository.com/artifact/javax.interceptor/javax.interceptor-api -->
 		<dependency>
@@ -211,7 +204,7 @@
 		<dependency>
 			<groupId>tw.hyin.java</groupId>
 			<artifactId>hyin-shared-utils</artifactId>
-			<version>2.0.0</version>
+			<version>2.0.1</version>
 		</dependency>
 
 		<!-- shared-utils -->
@@ -219,6 +212,11 @@
 			<groupId>tw.hyin.java</groupId>
 			<artifactId>hyin-db-utils</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
 		</dependency>
 
 	</dependencies>

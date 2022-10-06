@@ -22,7 +22,7 @@ public class RestTest extends AbstractRestTest {
     }
 
     @Test
-    public void login() {
+    public void apiTest() {
         try {
             String uri = "/test";
             MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -31,6 +31,7 @@ public class RestTest extends AbstractRestTest {
             assertEquals(200, status);
             String content = mvcResult.getResponse().getContentAsString();
             assertNotNull("response successfully", content);
+            System.out.println("--------------api test start.----------------");
             System.out.println(content);
         } catch (Exception e) {
             e.printStackTrace();

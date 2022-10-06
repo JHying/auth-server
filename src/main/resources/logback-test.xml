@@ -3,7 +3,7 @@
 <Configuration>
 
 	<!-- 日誌檔案目錄和壓縮檔案目錄配置 -->
-	<Property name="fileName" value="auth-service" />
+	<Property name="fileName" value="auth-server" />
 	<!-- 配置日誌檔輸出目錄，此配置將日誌輸出到tomcat根目錄下的指定資料夾 -->
 	<Property name="log-path" value="logs/${fileName}" />
 	<Property name="log-level" value="debug" />
