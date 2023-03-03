@@ -53,3 +53,6 @@ Dockerfile
 /logs
 /.idea
 *.iml
+
+/src/main/resources/key
+/src/main/resources/env/prod

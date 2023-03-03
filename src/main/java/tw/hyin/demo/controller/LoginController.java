@@ -1,10 +1,9 @@
 package tw.hyin.demo.controller;
 
-import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import tw.hyin.demo.dto.LoginInfo;
 import tw.hyin.demo.dto.LoginReq;
-import tw.hyin.demo.dto.SideNavObj;
+import tw.hyin.demo.service.AuthorityService;
 import tw.hyin.demo.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +16,6 @@ import tw.hyin.java.utils.http.BaseController;
 import tw.hyin.java.utils.http.ResponseObj;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -25,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginController extends BaseController {
 
     private final LoginService loginService;
-
+    private final AuthorityService authorityService;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${spring.redis.data.expireTime}")
@@ -33,8 +31,9 @@ public class LoginController extends BaseController {
 
     @Autowired
     public LoginController(LoginService loginService,
-                           RedisTemplate<String, Object> redisTemplate) {
+                           AuthorityService authorityService, RedisTemplate<String, Object> redisTemplate) {
         this.loginService = loginService;
+        this.authorityService = authorityService;
         this.redisTemplate = redisTemplate;
     }
 
@@ -48,6 +47,7 @@ public class LoginController extends BaseController {
     public ResponseEntity<ResponseObj<LoginInfo>> userLogin(@Valid @RequestBody LoginReq loginReq) {
         if (loginService.validate(loginReq)) {
             LoginInfo loginInfo = loginService.getLoginInfo(loginReq);
+            loginInfo.setUrls(authorityService.getMyAuthUrls(loginInfo));
             // 將 login 資料寫入 redis (存活 1 小時)
             this.redisTemplate.opsForValue().set(loginReq.getUserId(), loginInfo,
                     Integer.parseInt(expireTime), TimeUnit.MINUTES);
@@ -65,10 +65,10 @@ public class LoginController extends BaseController {
         return super.sendSuccessRsp(ResponseObj.RspMsg.SUCCESS);
     }
 
-    @ApiOperation(value = "側導覽列")
-    @PostMapping(value = "/sidenav", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseObj<List<SideNavObj>>> mySideNav(@RequestBody LoginInfo loginInfo) {
-        return super.sendSuccessRsp(loginService.getMySideNav(loginInfo.getRoles()));
-    }
+//    @ApiOperation(value = "側導覽列")
+//    @PostMapping(value = "/sidenav", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<ResponseObj<List<SideNavObj>>> mySideNav(@RequestBody LoginInfo loginInfo) {
+//        return super.sendSuccessRsp(loginService.getMySideNav(loginInfo.getRoles()));
+//    }
 
 }

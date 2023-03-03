@@ -26,4 +26,7 @@ public class LoginReq implements Serializable {
     @NotBlank
     private String userPW;
 
+    @NotBlank
+    private Integer sourceId;
+
 }

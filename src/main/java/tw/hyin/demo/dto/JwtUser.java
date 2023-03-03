@@ -17,7 +17,7 @@ public class JwtUser {
         private static final long serialVersionUID = 1L;
 
         {
-            put("User001", "Pass001");
+            put("User001", "fvotr64g8EDS48eewf68648EF78");
         }
     };
 

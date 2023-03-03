@@ -5,7 +5,7 @@ package tw.hyin.demo.dto.i;
  */
 public interface IRolePageList {
 
-	String getRoleId();
+	Integer getRoleKey();
 	String getPageUrl();
 
 }

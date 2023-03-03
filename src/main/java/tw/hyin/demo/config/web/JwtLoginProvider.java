@@ -39,10 +39,10 @@ public class JwtLoginProvider implements AuthenticationProvider {
         boolean check = false;
         Map<String, String> user = JwtUser.getUser();
         //前端使用公鑰加密訊息傳送，後端使用私鑰解密
-        String decryptPW = RSAUtil.decrypt(tokenReq.getJwtPW().getBytes(), KeyConfig.privateKey);
+        String decryptPW = RSAUtil.decrypt(tokenReq.getAuthPass().getBytes(), KeyConfig.privateKey);
         //驗證 jwt user
         for (Map.Entry<String, String> entry : user.entrySet()) {
-            if (tokenReq.getJwtUser().equals(entry.getKey()) && decryptPW.equals(entry.getValue())) {
+            if (tokenReq.getAuthUser().equals(entry.getKey()) && decryptPW.equals(entry.getValue())) {
                 check = true;
                 break;
             }

@@ -26,5 +26,5 @@ public interface AuthorityService {
 	void saveRoleResource(RedisTemplate<String, Object> redisTemplate);
 
 
-	Map<String, List<String>> getRoleResource();
+	Map<String, List<Integer>> getRoleResource();
 }

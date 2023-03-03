@@ -21,6 +21,8 @@ public class LoginInfo implements Serializable {
 	
     private String userId;
     private String userName;
-    private List<String> roles;
+    private List<Integer> roles;
+    private List<String> urls;
+    private List<SideNavObj> sideNavObjs;
 
 }

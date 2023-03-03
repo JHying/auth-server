@@ -1,28 +1,22 @@
 /**
- * 
+ *
  */
 package tw.hyin.demo.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author YingHan 2021-12-21
  *
  */
+@Data
 @Getter
 @Setter
 @Entity
@@ -31,16 +25,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "RolePage")
 public class RolePage implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RP_NO")
     private String rpNo;
-	
-    @Column(name = "PAGE_ID")
-    private String pageId;
-	
-	@Column(name = "ROLE_ID")
-    private String roleId;
+
+    @Column(name = "ROLE_KEY", nullable = false)
+    private Integer roleKey;
+
+    @Column(name = "PAGE_KEY", nullable = false)
+    private Integer pageKey;
+
 }

@@ -35,5 +35,5 @@ public interface LoginService {
 
     public List<SideNavObj> getAllSideNav();
 
-	List<SideNavObj> getMySideNav(List<String> role);
+	List<SideNavObj> getMySideNav(List<Integer> role);
 }

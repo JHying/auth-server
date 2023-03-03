@@ -20,11 +20,11 @@ public class TokenReq implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-    @JsonProperty("jwtUser")
-    private String jwtUser;
+    @JsonProperty("authUser")
+    private String authUser;
 
-    @JsonProperty("jwtPW")
-    private String jwtPW;
+    @JsonProperty("authPass")
+    private String authPass;
 
     @JsonProperty("userId")
     private String userId;

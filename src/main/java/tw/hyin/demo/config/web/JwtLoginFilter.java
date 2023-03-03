@@ -35,14 +35,11 @@ import tw.hyin.java.utils.security.JwtUtil;
  * @author H-yin
  */
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
-
-    //    private final RedisTemplate<String, Object> redisTemplate;
     private final UserTokenRepository tokenRepository;
 
     public JwtLoginFilter(String url, AuthenticationManager authManager, UserTokenRepository tokenRepository) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
-        //        this.redisTemplate = redisTemplate;
         this.tokenRepository = tokenRepository;
     }
 
@@ -54,21 +51,15 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) {
         // JSON 反序列化存放於 TokenReq
         TokenReq tokenReq = new ObjectMapper().readValue(req.getInputStream(), TokenReq.class);
-        //先確認登入狀態
-        //        if (!this.isUserLogin(tokenReq.getUserId())) {
-        //            return getAuthenticationManager()
-        //                    .authenticate(new UsernamePasswordAuthenticationToken("user is not allowed", null));
-        //        } else {
         // 導向 AuthenticationManager 重新定義之 Provider 驗證，並返回驗證狀態
         return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(
-                        tokenReq.getUserId() == null ? tokenReq.getJwtUser() : tokenReq.getUserId(), tokenReq));
-        //        }
+                        tokenReq.getUserId() == null ? tokenReq.getAuthUser() : tokenReq.getUserId(), tokenReq));
     }
 
     /**
      * 身分驗證成功
-     * payload = userName
+     * payload = userId
      */
     @SneakyThrows
     @Override
@@ -83,7 +74,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         String token;
         if (userToken == null) {
             // 使用 RSA 密鑰生成新的 token 通行證, 有效期 60 分鐘 * 24
-            int expiredMillis = 60 * 60 * 1000 * 24;
+            int expiredMillis = 60 * 60 * 1000 * 12;
             token = JwtUtil.generateToken(userId, KeyConfig.privateKey, expiredMillis);
             //儲存新token (先壓縮, 壓縮後長度約 576)
             Date expiredTime = new Date(now.getTime() + expiredMillis);
@@ -113,9 +104,5 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getOutputStream().println(JsonUtil.objToJson(responseObj));
     }
-
-    //    private boolean isUserLogin(String userId) throws AuthException {
-    //        return this.redisTemplate.opsForValue().get(userId) != null;
-    //    }
 
 }

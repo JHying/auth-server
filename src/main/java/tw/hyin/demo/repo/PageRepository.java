@@ -39,12 +39,13 @@ public interface PageRepository extends JpaRepository<PageInfo, String> {
                     + "INNER JOIN "
                     + "RolePage rp "
                     + "ON "
-                    + "p.pageId = rp.pageId "
+                    + "p.pageKey = rp.pageKey "
                     + "WHERE "
-                    + "p.pageParent IS null "
+                    + "p.pageParent IS null and p.pageActive = 'Y' "
                     + "and "
-                    + "rp.roleId IN :roles ")
-    public List<PageInfo> getMyParentPages(List<String> roles);
+                    + "rp.roleKey IN :roles "
+                    + "ORDER BY p.pageOrder ")
+    public List<PageInfo> getMyParentPages(List<Integer> roles);
 
     @Query(value =
             "select "
@@ -54,24 +55,24 @@ public interface PageRepository extends JpaRepository<PageInfo, String> {
                     + "INNER JOIN "
                     + "RolePage rp "
                     + "ON "
-                    + "p.pageId = rp.pageId "
+                    + "p.pageKey = rp.pageKey "
                     + "WHERE "
-                    + "p.pageParent IS NOT null "
+                    + "p.pageParent IS NOT null and p.pageActive = 'Y' "
                     + "and "
-                    + "rp.roleId IN :roles ")
-    public List<PageInfo> getMyChildPages(List<String> roles);
+                    + "rp.roleKey IN :roles ")
+    public List<PageInfo> getMyChildPages(List<Integer> roles);
 
     @Query(value =
             "select "
-                    + "p "
+                    + " p "
                     + "from "
-                    + "PageInfo p "
+                    + " PageInfo p "
                     + "INNER JOIN "
                     + " RolePage rp "
                     + "ON "
-                    + " p.pageId = rp.pageId "
+                    + " p.pageKey = rp.pageKey "
                     + "WHERE "
-                    + " rp.roleId IN :roles ")
-    public List<PageInfo> getMyAuthPages(List<String> roles);
+                    + " rp.roleKey IN :roles and p.pageActive = 'Y' ")
+    public List<PageInfo> getMyAuthPages(List<Integer> roles);
 
 }
